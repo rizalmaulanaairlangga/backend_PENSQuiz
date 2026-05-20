@@ -6,7 +6,7 @@ namespace PensQuiz.Api.Controllers;
 
 [ApiController]
 [Route("api/health")]
-public sealed class HealthController(IDbConnectionFactory db, IHttpClientFactory httpClientFactory, IConfiguration configuration, IWebHostEnvironment env) : ControllerBase
+public sealed class HealthController(IDbConnectionFactory db, IConfiguration configuration, IWebHostEnvironment env) : ControllerBase
 {
     [HttpGet]
     public IActionResult Get() => Ok(new { status = "ok", time = DateTimeOffset.UtcNow });
