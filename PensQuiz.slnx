@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PensQuiz.Api/PensQuiz.Api.csproj" />
+  </Folder>
+</Solution>
