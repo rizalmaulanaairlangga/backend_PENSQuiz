@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
 WORKDIR /app
 
 # Copy solution and project files to restore dependencies
@@ -16,12 +16,15 @@ COPY src/ ./src/
 RUN dotnet publish src/PensQuiz.Api/PensQuiz.Api.csproj -c Release -o /app/publish
 
 # Stage 2: Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 
 # Render exposes PORT env var, ASP.NET Core 8 listens on 8080 by default
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
+
+# Fix segfaults (exit code 139) on cloud platforms like Render
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
 ENTRYPOINT ["dotnet", "PensQuiz.Api.dll"]
